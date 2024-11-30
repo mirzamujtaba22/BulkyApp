@@ -1,22 +1,22 @@
 ﻿using Bulky.DataAccess.Repository.IRepository;
-using BulkyWeb.Data;
 using BulkyWeb.Models;
+using BulkyWeb.Data;
 using Microsoft.AspNetCore.Mvc;
 
-namespace BulkyWeb.Controllers
+namespace BulkyApplication.Areas.Admin.Controllers
 {
- 
-    public class CategoryController : Controller
+    [Area("Admin")]
+    public class ProductController : Controller
     {
         private readonly IUnitOfWork _unitofwork;
-        public CategoryController(IUnitOfWork unitOfWork) 
+        public ProductController(IUnitOfWork unitOfWork)
         {
             _unitofwork = unitOfWork;
         }
         public IActionResult Index()
         {
-            List<Category> getallcategories = _unitofwork.CategoryRepository.GetAll().ToList();
-            return View(getallcategories);
+            List<Product> getallProduct = _unitofwork.ProductRepository.GetAll().ToList();
+            return View(getallProduct);
         }
 
         public IActionResult Create()
@@ -25,7 +25,7 @@ namespace BulkyWeb.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(Category category)
+        public IActionResult Create(Product prod)
         {
             //if(category.Name == obj.DisplayOrder.ToString())
             //{
@@ -33,35 +33,36 @@ namespace BulkyWeb.Controllers
             //}
             if (ModelState.IsValid)
             {
-                _unitofwork.CategoryRepository.Add(category);
+                _unitofwork.ProductRepository.Add(prod);
                 _unitofwork.Save();
-                TempData["success"]="Category created successfully";
+                TempData["success"] = "Product created successfully";
                 return RedirectToAction("Index");
 
             }
             return View();
-           
+
         }
         public IActionResult Edit(int? id)
         {
-            if(id == null || id==0)
+            if (id == null || id == 0)
             {
                 return NotFound();
             }
-            Category categoryfromdb = _unitofwork.CategoryRepository.Get(u => u.Id == id);
-            if(categoryfromdb == null) {
+            Product productfromdb = _unitofwork.ProductRepository.Get(u => u.Id == id);
+            if (productfromdb == null)
+            {
                 return NotFound();
             }
-            return View(categoryfromdb);
+            return View(productfromdb);
         }
 
         [HttpPost]
-        public IActionResult Edit(Category category)
+        public IActionResult Edit(Product prod)
         {
-           
+
             if (ModelState.IsValid)
             {
-                _unitofwork.CategoryRepository.Update(category);
+                _unitofwork.ProductRepository.Update(prod);
                 _unitofwork.Save();
                 TempData["success"] = "Category Updated successfully";
                 return RedirectToAction("Index");
@@ -77,7 +78,7 @@ namespace BulkyWeb.Controllers
             {
                 return NotFound();
             }
-            Category categoryfromdb = _unitofwork.CategoryRepository.Get(u => u.Id == id);
+            Product categoryfromdb = _unitofwork.ProductRepository.Get(u => u.Id == id);
             if (categoryfromdb == null)
             {
                 return NotFound();
@@ -85,24 +86,24 @@ namespace BulkyWeb.Controllers
             return View(categoryfromdb);
         }
 
-        [HttpPost,ActionName("Delete")]
+        [HttpPost, ActionName("Delete")]
         public IActionResult DeletePost(int? id)
         {
-            Category? cat = _unitofwork.CategoryRepository.Get(u => u.Id == id);
-            if (cat == null)
+            Product? prod = _unitofwork.ProductRepository.Get(u => u.Id == id);
+            if (prod == null)
             {
                 return NotFound();
             }
-            _unitofwork.CategoryRepository.Remove(cat);
+            _unitofwork.ProductRepository.Remove(prod);
             _unitofwork.Save();
-            TempData["success"] = "Category Deleted successfully";
+            TempData["success"] = "Product Deleted successfully";
             return RedirectToAction("Index");
 
 
         }
-           
-        }
+
     }
+}
 
 
 

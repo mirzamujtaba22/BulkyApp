@@ -1,6 +1,6 @@
 ﻿using Bulky.DataAccess.Repository.IRepository;
-using BulkyWeb.Data;
 using BulkyWeb.Models;
+using BulkyWeb.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,10 +11,10 @@ using System.Threading.Tasks;
 namespace Bulky.DataAccess.Repository
 {
   
-    public class CategoryRepository : Repository<Category> , ICategoryRepository
+    public class ProductRepository : Repository<Product> , IProductRepository
     {
         private AppDbContext _db;
-        public CategoryRepository(AppDbContext db) : base(db)
+        public ProductRepository(AppDbContext db) : base(db)
         {
             _db = db;
         }
@@ -22,9 +22,9 @@ namespace Bulky.DataAccess.Repository
     
        
 
-        public void Update(Category cat)
+        public void Update(Product prod)
         {
-            _db.Categories.Update(cat);
+            _db.Product.Update(prod);
         }
     }
 }
